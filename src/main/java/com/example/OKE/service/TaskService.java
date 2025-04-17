@@ -45,6 +45,18 @@ public class TaskService {
         return tasks;
     }
 
+    public void saveTask(TaskForm reqTask, Integer status) {
+        Task saveTask = setTaskEntity(reqTask, status);
+        taskRepository.save(saveTask);
+    }
+
+    public TaskForm editTask(Integer id) {
+        List<Task> results = new ArrayList<>();
+        results.add((Task) taskRepository.findById(id).orElse(null));
+        List<TaskForm> reports = setTaskForm(results);
+        return reports.get(0);
+    }
+
     /*
      * タスク削除
      */
@@ -67,6 +79,17 @@ public class TaskService {
             tasks.add(task);
         }
         return tasks;
+    }
 
+    /*
+     * リクエストから取得した情報をEntityに設定
+     */
+    private Task setTaskEntity(TaskForm reqTask, Integer status) {
+        Task task = new Task();
+        task.setId(reqTask.getId());
+        task.setContent(reqTask.getContent());
+        task.setStatus(status);
+        task.setLimitDate(reqTask.getLimitDate());
+        return task;
     }
 }

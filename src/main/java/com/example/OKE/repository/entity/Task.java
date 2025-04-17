@@ -1,15 +1,10 @@
 package com.example.OKE.repository.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tasks")
@@ -24,15 +19,15 @@ public class Task {
     @Column(insertable = true, updatable = false)
     private String content;
 
-    @Column(insertable = false, updatable = false)
-    private int status;
+    @Column(insertable = true, updatable = false)
+    private Integer status;
 
-    @Column(name = "limit_date", insertable = false, updatable = false)
-    private Date limitDate;
+    @Column(name = "limit_date", insertable = true, updatable = false)
+    private LocalDateTime limitDate;
 
     @Column(name = "created_date", insertable = false, updatable = false)
-    private Date createdDate;
+    private LocalDateTime createdDate;
 
     @Column(name = "updated_date", insertable = false, updatable = true)
-    private Date updatedDate;
+    private LocalDateTime updatedDate;
 }

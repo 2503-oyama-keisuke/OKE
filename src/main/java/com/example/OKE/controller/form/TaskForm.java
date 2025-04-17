@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -11,10 +12,9 @@ import java.util.Date;
 public class TaskForm {
 
     private int id;
-    @NotBlank(message = "投稿内容を入力してください")
     private String content;
-    private int status;
-    private Date limitDate;
-    private Date createdDate;
-    private Date updatedDate;
+    private Integer status;
+    private LocalDateTime limitDate;
+    private LocalDateTime createdDate;
+    private LocalDateTime updatedDate;
 }
