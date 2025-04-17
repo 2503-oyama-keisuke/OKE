@@ -17,7 +17,7 @@
 
 <!-- 本日の日付表示 -->
 <div>
-    本日の日付：<p th:text="${#dates.format(#dates.createNow(),'yyyy/MM/dd')}"></p>
+    本日の日付：<p th:text="${today}"></p>
 </div>
 
 <!-- 新規タスク -->
