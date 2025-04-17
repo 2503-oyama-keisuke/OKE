@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -46,6 +47,8 @@ public class ToDoListController {
         mav.addObject("tasks", taskList);
         mav.addObject("start", start);
         mav.addObject("end", end);
+        // 現在日時取得・オブジェクト保管
+        mav.addObject("today", LocalDateTime.now());
 
         return mav;
     }

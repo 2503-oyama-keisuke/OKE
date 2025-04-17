@@ -1,5 +1,4 @@
 package com.example.OKE.service;
-
 import com.example.OKE.controller.form.TaskForm;
 import com.example.OKE.repository.TaskRepository;
 import com.example.OKE.repository.entity.Task;
@@ -54,7 +53,7 @@ public class TaskService {
      * DBから取得したデータをFormに設定
      */
     private List<TaskForm> setTaskForm(List<Task> results) {
-        List<TaskForm> reports = new ArrayList<>();
+        List<TaskForm> tasks = new ArrayList<>();
 
         for (int i = 0; i < results.size(); i++) {
             TaskForm task = new TaskForm();
@@ -63,8 +62,9 @@ public class TaskService {
             task.setContent(result.getContent());
             task.setStatus(result.getStatus());
             task.setLimit_date(result.getLimit_date().toLocalDate());
-            reports.add(task);
+            tasks.add(task);
         }
-        return reports;
+        return tasks;
     }
 }
+
