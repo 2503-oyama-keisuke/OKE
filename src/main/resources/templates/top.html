@@ -64,7 +64,7 @@
 <tbody>
 <!-- 一覧表示 -->
 <div class="tasks" th:each="task : ${tasks}">
-    <div th:if="${tasks.status} == 1">
+    <div th:if="${task.status} == 1">
         <tr>
             <td>
                 <!-- タスク内容 -->
@@ -106,7 +106,7 @@
             </td>
         </tr>
     </div>
-    <div th:if="${tasks.status} == 2">
+    <div th:if="${task.status} == 2">
         <tr>
             <td>
                 <!-- タスク内容 -->
@@ -148,7 +148,7 @@
             </td>
         </tr>
     </div>
-    <div th:if="${tasks.status} == 3">
+    <div th:if="${task.status} == 3">
         <tr>
             <td>
                 <!-- タスク内容 -->
@@ -190,7 +190,7 @@
             </td>
         </tr>
     </div>
-    <div th:if="${tasks.status} == 4">
+    <div th:if="${task.status} == 4">
         <tr>
             <td>
                 <!-- タスク内容 -->
