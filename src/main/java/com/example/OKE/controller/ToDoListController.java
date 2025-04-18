@@ -102,7 +102,7 @@ public class ToDoListController {
     }
 
     @PutMapping("/update/{id}")
-    public ModelAndView updateContent(@PathVariable Integer id, @PathVariable Integer status, @ModelAttribute("formModel") @Validated TaskForm task, BindingResult result) {
+    public ModelAndView updateContent(@PathVariable Integer id, @ModelAttribute("formModel") @Validated TaskForm task, BindingResult result) {
 
         if (result.hasErrors()) {
             List<String> errorMessages = new ArrayList<>();

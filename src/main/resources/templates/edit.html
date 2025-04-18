@@ -13,12 +13,13 @@
     <div class="errorMessages-icon" th:each="errorMessage : ${errorMessages}">
         <span th:text="${errorMessage}"/>
     </div>
-    <form th:method="put" th:action="/update" th:object="${formModel}">
+    <form th:method="put" th:action="@{/update/{id}(id=${formModel.id})}" th:object="${formModel}">
         <div class="form-area">
             <label>タスク内容</label><br/>
             <textarea class="task-box" th:field="*{content}" size="20" maxlength="200" /></textarea><br/>
             <label>タスク期限</label><br/>
-            <input type="date" name="limit">
+            <input th:type="hidden" th:field="*{status}">
+            <input th:type="date" th:field="*{limitDate}">
             <input type="submit" value="編集" />
         </div>
     </form>
