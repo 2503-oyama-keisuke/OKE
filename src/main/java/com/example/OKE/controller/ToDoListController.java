@@ -84,8 +84,9 @@ public class ToDoListController {
             return new ModelAndView("redirect:/new");
         }
         Integer status = 1;
+        taskForm.setStatus(status);
         // 投稿をテーブルに格納
-        taskService.saveTask(taskForm, status);
+        taskService.saveTask(taskForm);
         // rootへリダイレクト
         return new ModelAndView("redirect:/");
     }
@@ -101,7 +102,7 @@ public class ToDoListController {
     }
 
     @PutMapping("/update/{id}")
-    public ModelAndView updateContent(@PathVariable Integer id, @PathVariable Integer status, @ModelAttribute("formModel") @Validated TaskForm task, BindingResult result) {
+    public ModelAndView updateContent(@PathVariable Integer id, @ModelAttribute("formModel") @Validated TaskForm task, BindingResult result) {
 
         if (result.hasErrors()) {
             List<String> errorMessages = new ArrayList<>();
@@ -116,7 +117,7 @@ public class ToDoListController {
 
         task.setId(id);
         // 投稿をテーブルに格納
-        taskService.saveTask(task, status);
+        taskService.saveTask(task);
         // rootへリダイレクト
         return new ModelAndView("redirect:/");
     }
