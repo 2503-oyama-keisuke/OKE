@@ -20,7 +20,7 @@ public class Task {
     @Column(insertable = true, updatable = false)
     private String content;
 
-    @Column(insertable = true, updatable = false)
+    @Column(insertable = true, updatable = true)
     private Integer status;
 
     @Column(name = "limit_date", insertable = true, updatable = false)
@@ -29,6 +29,6 @@ public class Task {
     @Column(name = "created_date", insertable = false, updatable = false)
     private LocalDateTime createdDate;
 
-    @Column(name = "updated_date", insertable = false, updatable = true)
+    @Column(name = "updated_date", insertable = false, updatable = false)
     private LocalDateTime updatedDate;
 }
