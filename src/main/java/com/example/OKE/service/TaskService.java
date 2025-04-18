@@ -3,12 +3,16 @@ package com.example.OKE.service;
 import com.example.OKE.controller.form.TaskForm;
 import com.example.OKE.repository.TaskRepository;
 import com.example.OKE.repository.entity.Task;
+import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Service
 public class TaskService {
     @Autowired
     TaskRepository taskRepository;
@@ -16,18 +20,55 @@ public class TaskService {
     /*
      * レコード全件取得処理
      */
-    public List<TaskForm> findAllTask() {
+
+    public List<TaskForm> findByLimitDateRange(LocalDate start, LocalDate end, Short status, String content) {
+        LocalDateTime startDateTime;
+        LocalDateTime endDateTime;
+
+        if (start != null) {
+            startDateTime = start.atStartOfDay();
+        } else {
+            startDateTime = LocalDate.of(2020, 1, 1).atStartOfDay();
+        }
+        if (end != null) {
+            endDateTime = end.atTime(23, 59, 59);
+        } else {
+            endDateTime = LocalDate.of(2030, 12, 31).atStartOfDay();
+        }
+        if (status != null && !StringUtils.isEmpty(content)) {
+
+        }
+
+//        List<Task> results = taskRepository.findByLimitDateBetweenOrderByLimitDateDesc(startDateTime, endDateTime);
         List<Task> results = taskRepository.findAll();
         List<TaskForm> tasks = setTaskForm(results);
         return tasks;
     }
 
+    public void saveTask(TaskForm reqTask, Integer status) {
+        Task saveTask = setTaskEntity(reqTask, status);
+        taskRepository.save(saveTask);
+    }
+
+    public TaskForm editTask(Integer id) {
+        List<Task> results = new ArrayList<>();
+        results.add((Task) taskRepository.findById(id).orElse(null));
+        List<TaskForm> reports = setTaskForm(results);
+        return reports.get(0);
+    }
+
+    /*
+     * タスク削除
+     */
+    public void deleteTask(Integer id) {
+        taskRepository.deleteById(id);
+    }
+
     /*
      * DBから取得したデータをFormに設定
      */
-    private List<TaskForm> setReportForm(List<Task> results) {
+    private List<TaskForm> setTaskForm(List<Task> results) {
         List<TaskForm> tasks = new ArrayList<>();
-
         for (int i = 0; i < results.size(); i++) {
             TaskForm task = new TaskForm();
             Task result = results.get(i);
@@ -35,8 +76,20 @@ public class TaskService {
             task.setContent(result.getContent());
             task.setStatus(result.getStatus());
             task.setLimitDate(result.getLimitDate());
-            task.add(task);
+            tasks.add(task);
         }
         return tasks;
+    }
+
+    /*
+     * リクエストから取得した情報をEntityに設定
+     */
+    private Task setTaskEntity(TaskForm reqTask, Integer status) {
+        Task task = new Task();
+        task.setId(reqTask.getId());
+        task.setContent(reqTask.getContent());
+        task.setStatus(status);
+        task.setLimitDate(reqTask.getLimitDate());
+        return task;
     }
 }
