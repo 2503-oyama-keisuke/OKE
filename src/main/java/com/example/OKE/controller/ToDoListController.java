@@ -50,7 +50,7 @@ public class ToDoListController {
         mav.setViewName("/top");
         // 投稿データオブジェクトを保管
         // 現在日時取得・オブジェクト保管
-        mav.addObject("today", LocalDateTime.now());
+        mav.addObject("today", LocalDate.now());
         mav.addObject("tasks", taskList);
         mav.addObject("start", start);
         mav.addObject("end", end);
