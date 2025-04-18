@@ -98,7 +98,7 @@
             </td>
             <td>
                 <!-- 削除ボタン -->
-                <form th:action="「変更先のパス」" th:method="delete">
+                <form th:action="@{/delete/{id}(id=${task.id})}" th:method="delete">
                     <div class="delete">
                         <input type="submit" value="削除">
                     </div>
@@ -140,7 +140,7 @@
             </td>
             <td>
                 <!-- 削除ボタン -->
-                <form th:action="「変更先のパス」" th:method="delete">
+                <form th:action="@{/delete/{id}(id=${task.id})}" th:method="delete">
                     <div class="delete">
                         <input type="submit" value="削除">
                     </div>
@@ -182,7 +182,7 @@
             </td>
             <td>
                 <!-- 削除ボタン -->
-                <form th:action="「変更先のパス」" th:method="delete">
+                <form th:action="@{/delete/{id}(id=${task.id})}" th:method="delete">
                     <div class="delete">
                         <input type="submit" value="削除">
                     </div>
@@ -224,7 +224,7 @@
             </td>
             <td>
                 <!-- 削除ボタン -->
-                <form th:action="「変更先のパス」" th:method="delete">
+                <form th:action="@{/delete/{id}(id=${task.id})}" th:method="delete">
                     <div class="delete">
                         <input type="submit" value="削除">
                     </div>

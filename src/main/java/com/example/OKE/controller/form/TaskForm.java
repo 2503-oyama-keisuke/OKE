@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -14,7 +15,7 @@ public class TaskForm {
     private int id;
     private String content;
     private Integer status;
-    private LocalDateTime limitDate;
+    private LocalDate limitDate;
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
 }
