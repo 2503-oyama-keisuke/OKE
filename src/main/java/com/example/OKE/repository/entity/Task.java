@@ -22,7 +22,7 @@ public class Task {
     @Column(insertable = true, updatable = false)
     private Integer status;
 
-    @Column(name = "limit_date", insertable = true, updatable = true)
+    @Column(name = "limit_date", insertable = true, updatable = true) // ←updatableに問題あり。ステータス変更はどうする？
     private LocalDateTime limitDate;
 
     @Column(name = "created_date", insertable = false, updatable = false)

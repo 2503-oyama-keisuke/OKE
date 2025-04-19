@@ -2,7 +2,12 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <link th:href="@{/css/style.css}" rel="styleSheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <style>
+        .limitDate{
+        background-color : yellow;
+        }
+    </style>
     <title>TOP</title>
 </head>
 <body>
@@ -17,7 +22,7 @@
 
 <!-- 本日の日付表示 -->
 <div>
-    本日の日付：<p th:text="${today}"></p>
+    本日の日付：<p th:text="${#temporals.format(today, 'yyyy/MM/dd')}"></p>
 </div>
 
 <!-- 新規タスク -->
@@ -89,7 +94,11 @@
 
             <td>
                 <!-- タスク期限 -->
-                <p th:text="${task.limitDate}">
+                <div class="limitDate">
+                    <div th:styleappend="${task.limitDate <= today}? 'background-color : red;'">
+                        <p th:text="${#temporals.format(task.limitDate, 'yyyy/MM/dd')}"></p>
+                    </div>
+                </div>
             </td>
             <td>
                 <!-- 編集ボタン -->

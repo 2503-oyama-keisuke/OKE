@@ -33,11 +33,9 @@ public class ToDoListController {
         ModelAndView mav = new ModelAndView();
         // タスクを期限日時で絞り込み取得
         List<TaskForm> taskList = taskService.findByLimitDateRange(start, end, status, content);
-
         // 画面遷移先を指定
         mav.setViewName("/top");
-        // 現在日時取得・オブジェクト保管
-
+        // 現在日時オブジェクト保管
         mav.addObject("today", LocalDate.now());
         // 投稿データオブジェクトを保管
         mav.addObject("tasks", taskList);
@@ -61,7 +59,7 @@ public class ToDoListController {
     }
 
     @PostMapping("/add")
-    public ModelAndView addContent(@ModelAttribute("formModel") @Validated TaskForm taskForm, BindingResult result) {
+    public ModelAndView addContent(@ModelAttribute("formModel") @Validated TaskForm task, BindingResult result) {
 
         if (result.hasErrors()) {
             List<String> errorMessages = new ArrayList<>();
@@ -70,13 +68,16 @@ public class ToDoListController {
                 errorMessage = error.getDefaultMessage();
                 errorMessages.add(errorMessage);
             }
-            session.setAttribute("errorMessages", errorMessages);
-            return new ModelAndView("redirect:/new");
+            ModelAndView mav = new ModelAndView();
+            mav.setViewName("/new");
+            mav.addObject("formModel", task);
+            mav.addObject("errorMessages", errorMessages);
+            return mav;
         }
         Integer status = 1;
-        taskForm.setStatus(status);
-        // 投稿をテーブルに格納
-        taskService.saveTask(taskForm);
+        task.setStatus(status);
+        // タスクをテーブルに格納
+        taskService.saveTask(task);
         // rootへリダイレクト
         return new ModelAndView("redirect:/");
     }
@@ -101,12 +102,15 @@ public class ToDoListController {
                 errorMessage = error.getDefaultMessage();
                 errorMessages.add(errorMessage);
             }
-            session.setAttribute("errorMessages", errorMessages);
-            return new ModelAndView("redirect:/edit");
+            ModelAndView mav = new ModelAndView();
+            mav.setViewName("/new");
+            mav.addObject("formModel", task);
+            mav.addObject("errorMessages", errorMessages);
+            return mav;
         }
 
         task.setId(id);
-        // 投稿をテーブルに格納
+        // タスクをテーブルに格納
         taskService.saveTask(task);
         // rootへリダイレクト
         return new ModelAndView("redirect:/");
