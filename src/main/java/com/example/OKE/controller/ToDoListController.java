@@ -33,27 +33,21 @@ public class ToDoListController {
     @GetMapping
     public ModelAndView top(@RequestParam(name = "start", required = false) LocalDate start,
                             @RequestParam(name = "end", required = false) LocalDate end,
-                            @RequestParam(name = "status", required = false) Short status,
+                            @RequestParam(name = "status", required = false) Integer status,
                             @RequestParam(name = "content", required = false) String content) {
         ModelAndView mav = new ModelAndView();
         // タスクを期限日時で絞り込み取得
         List<TaskForm> taskList = taskService.findByLimitDateRange(start, end, status, content);
 
-        Object error = session.getAttribute("error");
-        Object formTaskId = session.getAttribute("formTaskId");
-        if (error != null) {
-            mav.addObject("formTaskId", formTaskId);
-            mav.addObject("error", error);
-            session.removeAttribute("error");
-        }
         // 画面遷移先を指定
         mav.setViewName("/top");
-        // 投稿データオブジェクトを保管
         // 現在日時取得・オブジェクト保管
         mav.addObject("today", LocalDate.now());
+        // 投稿データオブジェクトを保管
         mav.addObject("tasks", taskList);
         mav.addObject("start", start);
         mav.addObject("end", end);
+        mav.addObject("content", content);
 
         return mav;
     }
@@ -130,6 +124,18 @@ public class ToDoListController {
         //テーブルから投稿を削除
         taskService.deleteTask(id);
         //rootへリダイレクト
+        return new ModelAndView("redirect:/");
+    }
+
+    /*
+     * ステータス変更処理
+     */
+    @PutMapping("/editStatus/{id}")
+    public ModelAndView editContent(@PathVariable Integer id, Integer status) {
+        TaskForm task = new TaskForm();
+        task.setId(id);
+        task.setStatus(status);
+        taskService.saveStatus(task);
         return new ModelAndView("redirect:/");
     }
 

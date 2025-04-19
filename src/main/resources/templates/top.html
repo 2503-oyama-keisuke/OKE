@@ -29,21 +29,21 @@
 <div>
     <form action="/">
         <!-- 日付絞込み -->
-        期限　<input type="text" name="start">
-        ～　<input type="text" name="end">
+        期限　<input type="date" name="start">
+        ～　<input type="date" name="end">
 
         <!-- ステータス絞込み -->
         ステータス
         <select name="status">
-            <option value=""></option>
-            <option value="1">未着手</option>
-            <option value="2">実行中</option>
-            <option value="3">ステイ中</option>
-            <option value="4">完了</option>
+            <option value="" th:selected="${status == null}"></option>
+            <option value="1" th:selected="${status == 1}">未着手</option>
+            <option value="2" th:selected="${status == 2}">実行中</option>
+            <option value="3" th:selected="${status == 3}">ステイ中</option>
+            <option value="4" th:selected="${status == 4}">完了</option>
         </select>
 
         <!-- タスク内容絞込み -->
-        タスク内容　<input type="text" name="task">
+        タスク内容　<input type="text" name="content" th:value="${content}">
 
         <!-- 絞込みボタン -->
         <input type="submit" value="絞り込み">
@@ -64,174 +64,47 @@
 <tbody>
 <!-- 一覧表示 -->
 <div class="tasks" th:each="task : ${tasks}">
-    <div th:if="${task.status} == 1">
-        <tr>
-            <td>
-                <!-- タスク内容 -->
-                <p th:text="${task.content}">
-            </td>
-            <td>
-                <!-- ステータス -->
-                <select name="status">
-                    <option value=""></option>
-                    <option value="1">未着手</option>
-                    <option value="2">実行中</option>
-                    <option value="3">ステイ中</option>
-                    <option value="4">完了</option>
-                </select>
-            </td>
-            <td>
-                <!-- 変更ボタン -->
-                <form th:action="「変更先のパス」" method="post">
-                    <input type="hidden" th:value="task.status">
-                    <input type="submit" value="変更">
-                </form>
-            </td>
-            <td>
-                <!-- タスク期限 -->
-            </td>
-            <td>
-                <!-- 編集ボタン -->
-                <form th:action="@{/edit/{id}(id=${task.id})}" method="get">
-                    <input type="submit" value="編集">
-                </form>
-            </td>
-            <td>
-                <!-- 削除ボタン -->
-                <form th:action="@{/delete/{id}(id=${task.id})}" th:method="delete">
-                    <div class="delete">
-                        <input type="submit" value="削除">
-                    </div>
-                </form>
-            </td>
-        </tr>
-    </div>
-    <div th:if="${task.status} == 2">
-        <tr>
-            <td>
-                <!-- タスク内容 -->
-                <p th:text="${task.content}">
-            </td>
-            <td>
-                <!-- ステータス -->
-                <select name="status">
-                    <option value=""></option>
-                    <option value="1">未着手</option>
-                    <option value="2">実行中</option>
-                    <option value="3">ステイ中</option>
-                    <option value="4">完了</option>
-                </select>
-            </td>
-            <td>
-                <!-- 変更ボタン -->
-                <form th:action="「変更先のパス」" method="post">
-                    <input type="hidden" th:value="task.status">
-                    <input type="submit" value="変更">
-                </form>
-            </td>
-            <td>
-                <!-- タスク期限 -->
-            </td>
-            <td>
-                <!-- 編集ボタン -->
-                <form th:action="@{/edit/{id}(id=${task.id})}" method="get">
-                    <input type="submit" value="編集">
-                </form>
-            </td>
-            <td>
-                <!-- 削除ボタン -->
-                <form th:action="@{/delete/{id}(id=${task.id})}" th:method="delete">
-                    <div class="delete">
-                        <input type="submit" value="削除">
-                    </div>
-                </form>
-            </td>
-        </tr>
-    </div>
-    <div th:if="${task.status} == 3">
-        <tr>
-            <td>
-                <!-- タスク内容 -->
-                <p th:text="${task.content}">
-            </td>
-            <td>
-                <!-- ステータス -->
-                <select name="status">
-                    <option value=""></option>
-                    <option value="1">未着手</option>
-                    <option value="2">実行中</option>
-                    <option value="3">ステイ中</option>
-                    <option value="4">完了</option>
-                </select>
-            </td>
-            <td>
-                <!-- 変更ボタン -->
-                <form th:action="「変更先のパス」" method="post">
-                    <input type="hidden" th:value="task.status">
-                    <input type="submit" value="変更">
-                </form>
-            </td>
-            <td>
-                <!-- タスク期限 -->
-            </td>
-            <td>
-                <!-- 編集ボタン -->
-                <form th:action="@{/edit/{id}(id=${task.id})}" method="get">
-                    <input type="submit" value="編集">
-                </form>
-            </td>
-            <td>
-                <!-- 削除ボタン -->
-                <form th:action="@{/delete/{id}(id=${task.id})}" th:method="delete">
-                    <div class="delete">
-                        <input type="submit" value="削除">
-                    </div>
-                </form>
-            </td>
-        </tr>
-    </div>
-    <div th:if="${task.status} == 4">
-        <tr>
-            <td>
-                <!-- タスク内容 -->
-                <p th:text="${task.content}">
-            </td>
-            <td>
-                <!-- ステータス -->
-                <select name="status">
-                    <option value=""></option>
-                    <option value="1">未着手</option>
-                    <option value="2">実行中</option>
-                    <option value="3">ステイ中</option>
-                    <option value="4">完了</option>
-                </select>
-            </td>
-            <td>
-                <!-- 変更ボタン -->
-                <form th:action="「変更先のパス」" method="post">
-                    <input type="hidden" th:value="task.status">
-                    <input type="submit" value="変更">
-                </form>
-            </td>
-            <td>
-                <!-- タスク期限 -->
-            </td>
-            <td>
-                <!-- 編集ボタン -->
-                <form th:action="@{/edit/{id}(id=${task.id})}" method="get">
-                    <input type="submit" value="編集">
-                </form>
-            </td>
-            <td>
-                <!-- 削除ボタン -->
-                <form th:action="@{/delete/{id}(id=${task.id})}" th:method="delete">
-                    <div class="delete">
-                        <input type="submit" value="削除">
-                    </div>
-                </form>
-            </td>
-        </tr>
-    </div>
+    <tr>
+        <td>
+            <!-- タスク内容 -->
+            <p th:text="${task.content}">
+        </td>
+        <form th:action="@{/editStatus/{id}(id=${task.id})}" th:method="put">
+        <td>
+            <!-- ステータス -->
+            <select name="status">
+                <option value=""></option>
+                <option value="1" th:selected="${task.status == 1}">未着手</option>
+                <option value="2" th:selected="${task.status == 2}">実行中</option>
+                <option value="3" th:selected="${task.status == 3}">ステイ中</option>
+                <option value="4" th:selected="${task.status == 4}">完了</option>
+            </select>
+        </td>
+        <td>
+            <!-- 変更ボタン -->
+            <input type="hidden" th:value="task.status">
+            <input type="submit" value="変更">
+        </td>
+        </form>
+
+        <td>
+            <!-- タスク期限 -->
+        </td>
+        <td>
+            <!-- 編集ボタン -->
+            <form th:action="@{/edit/{id}(id=${task.id})}" method="get">
+                <input type="submit" value="編集">
+            </form>
+        </td>
+        <td>
+            <!-- 削除ボタン -->
+            <form th:action="@{/delete/{id}(id=${task.id})}" th:method="delete">
+                <div class="delete">
+                    <input type="submit" value="削除">
+                </div>
+            </form>
+        </td>
+    </tr>
 </div>
 </tbody>
 </body>
