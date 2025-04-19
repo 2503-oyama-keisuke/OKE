@@ -11,13 +11,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -42,6 +37,7 @@ public class ToDoListController {
         // 画面遷移先を指定
         mav.setViewName("/top");
         // 現在日時取得・オブジェクト保管
+
         mav.addObject("today", LocalDate.now());
         // 投稿データオブジェクトを保管
         mav.addObject("tasks", taskList);

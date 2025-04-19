@@ -54,11 +54,6 @@ public class TaskService {
         }
     }
 
-//        List<Task> results = taskRepository.findAll();
-//        List<TaskForm> tasks = setTaskForm(results);
-//        return tasks;
-//    }
-
     public void saveTask(TaskForm reqTask) {
         Task saveTask = setTaskEntity(reqTask);
         taskRepository.save(saveTask);
