@@ -3,11 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <link th:href="@{/css/style.css}" rel="stylesheet">
-    <style>
-        .limitDate{
-        background-color : yellow;
-        }
-    </style>
+<!--    <style>-->
+<!--        -->
+<!--    </style>-->
     <title>TOP</title>
 </head>
 <body>
@@ -22,7 +20,7 @@
 
 <!-- 本日の日付表示 -->
 <div>
-    本日の日付：<p th:text="${#temporals.format(today, 'yyyy/MM/dd')}"></p>
+    本日の日付：<span th:text="${#temporals.format(today, 'yyyy/MM/dd')}"></span>
 </div>
 
 <!-- 新規タスク -->
@@ -31,11 +29,11 @@
 </a>
 
 <!-- 絞込み機能 -->
-<div>
+<div class="narrowing-down">
     <form action="/">
         <!-- 日付絞込み -->
         期限　<input type="date" name="start">
-        ～　<input type="date" name="end">
+         ～　<input type="date" name="end">
 
         <!-- ステータス絞込み -->
         ステータス
