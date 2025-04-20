@@ -21,7 +21,7 @@ public class TaskService {
      * レコード全件取得処理
      */
 
-    public List<TaskForm> findByLimitDateRange(LocalDate start, LocalDate end, Short status, String content) {
+    public List<TaskForm> findByLimitDateRange(LocalDate start, LocalDate end, Integer status, String content) {
         LocalDateTime startDateTime;
         LocalDateTime endDateTime;
 
@@ -33,16 +33,25 @@ public class TaskService {
         if (end != null) {
             endDateTime = end.atTime(23, 59, 59);
         } else {
-            endDateTime = LocalDate.of(2030, 12, 31).atStartOfDay();
+            endDateTime = LocalDate.of(2100, 12, 31).atTime(23, 59, 59);
         }
         if (status != null && !StringUtils.isEmpty(content)) {
-
+            List<Task> results = taskRepository.findByLimitDateBetweenAndStatusAndContentOrderByLimitDateAsc(startDateTime, endDateTime, status, content);
+            List<TaskForm> tasks = setTaskForm(results);
+            return tasks;
+        } else if (status != null) {
+            List<Task> results = taskRepository.findByLimitDateBetweenAndStatusOrderByLimitDateAsc(startDateTime, endDateTime, status);
+            List<TaskForm> tasks = setTaskForm(results);
+            return tasks;
+        } else if (!StringUtils.isBlank(content)) {
+            List<Task> results = taskRepository.findByLimitDateBetweenAndContentOrderByLimitDateAsc(startDateTime, endDateTime, content);
+            List<TaskForm> tasks = setTaskForm(results);
+            return tasks;
+        } else {
+            List<Task> results = taskRepository.findByLimitDateBetweenOrderByLimitDateAsc(startDateTime, endDateTime);
+            List<TaskForm> tasks = setTaskForm(results);
+            return tasks;
         }
-
-//        List<Task> results = taskRepository.findByLimitDateBetweenOrderByLimitDateDesc(startDateTime, endDateTime);
-        List<Task> results = taskRepository.findAll();
-        List<TaskForm> tasks = setTaskForm(results);
-        return tasks;
     }
 
     public void saveTask(TaskForm reqTask) {
@@ -84,7 +93,7 @@ public class TaskService {
             task.setId(result.getId());
             task.setContent(result.getContent());
             task.setStatus(result.getStatus());
-            task.setLimitDate(result.getLimitDate());
+            task.setLimitDate(result.getLimitDate().toLocalDate());
             tasks.add(task);
         }
         return tasks;
@@ -98,7 +107,7 @@ public class TaskService {
         task.setId(reqTask.getId());
         task.setContent(reqTask.getContent());
         task.setStatus(reqTask.getStatus());
-        task.setLimitDate(reqTask.getLimitDate());
+        task.setLimitDate(reqTask.getLimitDate().atTime(0, 0, 0));
         return task;
     }
 }
