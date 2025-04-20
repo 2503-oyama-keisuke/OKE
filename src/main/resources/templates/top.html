@@ -17,7 +17,7 @@
 
 <!-- 本日の日付表示 -->
 <div>
-    本日の日付：<p th:text="${today}"></p>
+    本日の日付：<p th:text="${#temporals.format(today, 'yyyy/M/d')}"></p>
 </div>
 
 <!-- 新規タスク -->
@@ -89,6 +89,7 @@
 
         <td>
             <!-- タスク期限 -->
+            <p th:text="#temporals.format(task.limitDate, ">
         </td>
         <td>
             <!-- 編集ボタン -->
