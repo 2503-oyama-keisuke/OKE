@@ -2,22 +2,22 @@ package com.example.OKE.controller;
 
 import com.example.OKE.controller.form.TaskForm;
 import com.example.OKE.service.TaskService;
+import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collection;
 import java.util.List;
 
 @Controller
@@ -38,10 +38,9 @@ public class ToDoListController {
         ModelAndView mav = new ModelAndView();
         // タスクを期限日時で絞り込み取得
         List<TaskForm> taskList = taskService.findByLimitDateRange(start, end, status, content);
-
         // 画面遷移先を指定
         mav.setViewName("/top");
-        // 現在日時取得・オブジェクト保管
+        // 現在日時オブジェクト保管
         mav.addObject("today", LocalDate.now());
         // 投稿データオブジェクトを保管
         mav.addObject("tasks", taskList);
@@ -49,23 +48,26 @@ public class ToDoListController {
         mav.addObject("end", end);
         mav.addObject("content", content);
 
+        if (!CollectionUtils.isEmpty((Collection<?>) session.getAttribute("errorMessages"))) {
+            mav.addObject("errorMessages", session.getAttribute("errorMessages"));
+        }
+        session.invalidate();
+
         return mav;
     }
 
     @GetMapping("/new")
     public ModelAndView addText() {
         ModelAndView mav = new ModelAndView();
-        // form用の空のentityを準備
-        TaskForm taskForm = new TaskForm();
+        TaskForm task = new TaskForm();
+        mav.addObject("formModel", task);
         // 画面遷移先を指定
         mav.setViewName("/new");
-        // 準備した空のFormを保管
-        mav.addObject("formModel", taskForm);
         return mav;
     }
 
     @PostMapping("/add")
-    public ModelAndView addContent(@ModelAttribute("formModel") @Validated TaskForm taskForm, BindingResult result) {
+    public ModelAndView addContent(@ModelAttribute("formModel") @Validated TaskForm task, BindingResult result) {
 
         if (result.hasErrors()) {
             List<String> errorMessages = new ArrayList<>();
@@ -74,21 +76,35 @@ public class ToDoListController {
                 errorMessage = error.getDefaultMessage();
                 errorMessages.add(errorMessage);
             }
-            session.setAttribute("errorMessages", errorMessages);
-            return new ModelAndView("redirect:/new");
+            ModelAndView mav = new ModelAndView();
+            mav.setViewName("/new");
+            mav.addObject("formModel", task);
+            mav.addObject("errorMessages", errorMessages);
+            return mav;
         }
         Integer status = 1;
-        taskForm.setStatus(status);
-        // 投稿をテーブルに格納
-        taskService.saveTask(taskForm);
+        task.setStatus(status);
+        // タスクをテーブルに格納
+        taskService.saveTask(task);
         // rootへリダイレクト
         return new ModelAndView("redirect:/");
     }
 
-    @GetMapping("/edit/{id}")
-    public ModelAndView editContent(@PathVariable Integer id) {
+    @GetMapping({"/edit/", "/edit/{id}"})
+    public ModelAndView editContent(@PathVariable @Validated Integer id) {
+        String strId = id.toString();
+        List<String> errorMessages = new ArrayList<>();
+        TaskForm task = null;
+
+        if ((!StringUtils.isBlank(strId)) || strId.matches("^[0-9]*$")) {
+            task = taskService.editTask(id);
+        }
+        if (task == null) {
+            errorMessages.add("不正なパラメータです");
+            session.setAttribute("errorMessages", errorMessages);
+            return new ModelAndView("redirect:/");
+        }
         ModelAndView mav = new ModelAndView();
-        TaskForm task = taskService.editTask(id);
         mav.addObject("formModel", task);
         // 画面遷移先を指定
         mav.setViewName("/edit");
@@ -96,7 +112,8 @@ public class ToDoListController {
     }
 
     @PutMapping("/update/{id}")
-    public ModelAndView updateContent(@PathVariable Integer id, @ModelAttribute("formModel") @Validated TaskForm task, BindingResult result) {
+    public ModelAndView updateContent(@PathVariable Integer id, Integer
+            status, @ModelAttribute("formModel") @Validated TaskForm task, BindingResult result) {
 
         if (result.hasErrors()) {
             List<String> errorMessages = new ArrayList<>();
@@ -105,12 +122,16 @@ public class ToDoListController {
                 errorMessage = error.getDefaultMessage();
                 errorMessages.add(errorMessage);
             }
-            session.setAttribute("errorMessages", errorMessages);
-            return new ModelAndView("redirect:/edit");
+            ModelAndView mav = new ModelAndView();
+            mav.setViewName("/edit");
+            mav.addObject("formModel", task);
+            mav.addObject("errorMessages", errorMessages);
+            return mav;
         }
 
         task.setId(id);
-        // 投稿をテーブルに格納
+        task.setStatus(status);
+        // タスクをテーブルに格納
         taskService.saveTask(task);
         // rootへリダイレクト
         return new ModelAndView("redirect:/");
@@ -132,10 +153,7 @@ public class ToDoListController {
      */
     @PutMapping("/editStatus/{id}")
     public ModelAndView editContent(@PathVariable Integer id, Integer status) {
-        TaskForm task = new TaskForm();
-        task.setId(id);
-        task.setStatus(status);
-        taskService.saveStatus(task);
+        taskService.saveStatus(id, status);
         return new ModelAndView("redirect:/");
     }
 

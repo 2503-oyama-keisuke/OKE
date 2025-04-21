@@ -54,11 +54,6 @@ public class TaskService {
         }
     }
 
-//        List<Task> results = taskRepository.findAll();
-//        List<TaskForm> tasks = setTaskForm(results);
-//        return tasks;
-//    }
-
     public void saveTask(TaskForm reqTask) {
         Task saveTask = setTaskEntity(reqTask);
         taskRepository.save(saveTask);
@@ -81,10 +76,11 @@ public class TaskService {
     /*
      * ステータス変更
      */
-    public void saveStatus(TaskForm reqTask) {
+    public void saveStatus(Integer id, Integer status) {
 
-        Task saveTask = setTaskEntity(reqTask);
-        taskRepository.save(saveTask);
+        Task task = taskRepository.findById(id).orElseThrow();
+        task.setStatus(status);
+        taskRepository.save(task);
     }
 
     /*
@@ -112,8 +108,7 @@ public class TaskService {
         task.setId(reqTask.getId());
         task.setContent(reqTask.getContent());
         task.setStatus(reqTask.getStatus());
-        task.setLimitDate(reqTask.getLimitDate().atStartOfDay());
-//        .atTime(0, 0, 0)
+        task.setLimitDate(reqTask.getLimitDate().atTime(0,0,0));
         return task;
     }
 }

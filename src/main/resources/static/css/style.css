@@ -130,3 +130,24 @@ label {
 	margin-left: 10px;
 	color: red;
 }
+
+/* テーブル部分 */
+table {
+    width: 100%;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+}
+
+/* 絞込みフォーム */
+.narrowing-down {
+    width: 100%;
+    align-items: center;
+}
+
+.limitDate{
+    background-color : yellow;
+}
