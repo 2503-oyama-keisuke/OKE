@@ -69,12 +69,17 @@ public class ToDoListController {
     @PostMapping("/add")
     public ModelAndView addContent(@ModelAttribute("formModel") @Validated TaskForm task, BindingResult result) {
 
-        if (result.hasErrors()) {
-            List<String> errorMessages = new ArrayList<>();
-            String errorMessage;
-            for (FieldError error : result.getFieldErrors()) {
-                errorMessage = error.getDefaultMessage();
-                errorMessages.add(errorMessage);
+        List<String> errorMessages = new ArrayList<>();
+        if(result.hasErrors() || task.getContent().matches("　")) {
+            if (result.hasErrors()) {
+                String errorMessage;
+                for (FieldError error : result.getFieldErrors()) {
+                    errorMessage = error.getDefaultMessage();
+                    errorMessages.add(errorMessage);
+                }
+            }
+            if(task.getContent().matches("　")){
+                errorMessages.add("・タスクを入力してください");
             }
             ModelAndView mav = new ModelAndView();
             mav.setViewName("/new");
@@ -90,17 +95,17 @@ public class ToDoListController {
         return new ModelAndView("redirect:/");
     }
 
-    @GetMapping("/edit/{id}")
-    public ModelAndView editContent(@PathVariable(required = false) @Validated Integer id) {
-        String strId = id.toString();
+    @GetMapping({"/edit/{id}", "/edit/"})
+    public ModelAndView editContent(@PathVariable(required = false) String id) {
         List<String> errorMessages = new ArrayList<>();
         TaskForm task = null;
 
-        if ((id.equals(null) || (!StringUtils.isBlank(strId))) || strId.matches("^[0-9]*$")) {
-            task = taskService.editTask(id);
+        if ((!StringUtils.isBlank(id)) && id.matches("^[0-9]*$")) {
+            Integer taskId = Integer.parseInt(id);
+            task = taskService.editTask(taskId);
         }
         if (task == null) {
-            errorMessages.add("不正なパラメータです");
+            errorMessages.add("・不正なパラメータです");
             session.setAttribute("errorMessages", errorMessages);
             return new ModelAndView("redirect:/");
         }
@@ -115,12 +120,17 @@ public class ToDoListController {
     public ModelAndView updateContent(@PathVariable Integer id, Integer
             status, @ModelAttribute("formModel") @Validated TaskForm task, BindingResult result) {
 
-        if (result.hasErrors()) {
-            List<String> errorMessages = new ArrayList<>();
-            String errorMessage;
-            for (FieldError error : result.getFieldErrors()) {
-                errorMessage = error.getDefaultMessage();
-                errorMessages.add(errorMessage);
+        List<String> errorMessages = new ArrayList<>();
+        if(result.hasErrors() || task.getContent().matches("　")) {
+            if (result.hasErrors()) {
+                String errorMessage;
+                for (FieldError error : result.getFieldErrors()) {
+                    errorMessage = error.getDefaultMessage();
+                    errorMessages.add(errorMessage);
+                }
+            }
+            if(task.getContent().matches("　")){
+                errorMessages.add("・タスクを入力してください");
             }
             ModelAndView mav = new ModelAndView();
             mav.setViewName("/edit");
