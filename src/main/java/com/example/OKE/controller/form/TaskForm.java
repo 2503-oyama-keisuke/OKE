@@ -1,5 +1,6 @@
 package com.example.OKE.controller.form;
 
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
@@ -20,7 +21,7 @@ public class TaskForm {
     private String content;
     private Integer status;
     @NotNull(message="・期限を設定してください")
-    @Past(message="・無効な日付です")
+    @FutureOrPresent(message="・無効な日付です")
     private LocalDate limitDate;
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;

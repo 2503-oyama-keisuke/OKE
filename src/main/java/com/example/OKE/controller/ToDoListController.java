@@ -132,10 +132,7 @@ public class ToDoListController {
      */
     @PutMapping("/editStatus/{id}")
     public ModelAndView editContent(@PathVariable Integer id, Integer status) {
-        TaskForm task = new TaskForm();
-        task.setId(id);
-        task.setStatus(status);
-        taskService.saveStatus(task);
+        taskService.saveStatus(id, status);
         return new ModelAndView("redirect:/");
     }
 

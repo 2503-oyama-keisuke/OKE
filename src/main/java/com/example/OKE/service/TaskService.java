@@ -76,10 +76,11 @@ public class TaskService {
     /*
      * ステータス変更
      */
-    public void saveStatus(TaskForm reqTask) {
+    public void saveStatus(Integer id, Integer status) {
 
-        Task saveTask = setTaskEntity(reqTask);
-        taskRepository.save(saveTask);
+        Task task = taskRepository.findById(id).orElseThrow();
+        task.setStatus(status);
+        taskRepository.save(task);
     }
 
     /*

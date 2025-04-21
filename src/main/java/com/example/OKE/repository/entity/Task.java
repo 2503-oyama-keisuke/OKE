@@ -19,7 +19,7 @@ public class Task {
     @Column(insertable = true, updatable = false)
     private String content;
 
-    @Column(insertable = true, updatable = false)
+    @Column(insertable = true, updatable = true)
     private Integer status;
 
     @Column(name = "limit_date", insertable = true, updatable = true) // ←updatableに問題あり。ステータス変更はどうする？
