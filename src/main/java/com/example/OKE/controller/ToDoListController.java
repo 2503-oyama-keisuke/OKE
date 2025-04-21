@@ -91,12 +91,12 @@ public class ToDoListController {
     }
 
     @GetMapping("/edit/{id}")
-    public ModelAndView editContent(@PathVariable @Validated Integer id) {
+    public ModelAndView editContent(@PathVariable(required = false) @Validated Integer id) {
         String strId = id.toString();
         List<String> errorMessages = new ArrayList<>();
         TaskForm task = null;
 
-        if ((!StringUtils.isBlank(strId)) || strId.matches("^[0-9]*$")) {
+        if ((id.equals(null) || (!StringUtils.isBlank(strId))) || strId.matches("^[0-9]*$")) {
             task = taskService.editTask(id);
         }
         if (task == null) {

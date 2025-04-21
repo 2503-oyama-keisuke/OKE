@@ -67,7 +67,7 @@
         <tr>
             <td>
                 <!-- タスク内容 -->
-                <p th:text="${task.content}">
+                <pre><p th:text="${task.content}"></p></pre>
             </td>
             <form th:action="@{/editStatus/{id}(id=${task.id})}" th:method="put">
                 <td>
@@ -83,9 +83,9 @@
                 <td>
                     <!-- 変更ボタン -->
 <!--                    <input type="hidden" th:value="task.status">-->
-                    <input type="hidden" th:value="${task.content}">
-                    <input type="hidden" th:value="${task.limitDate}">
-                    <input type="submit" value="変更">
+<!--                    <input type="hidden" th:value="${task.content}">-->
+<!--                    <input type="hidden" th:value="${task.limitDate}">-->
+                    <input type="submit" value="変更" onclick="return confirm('ステータスをへんこうしますか？');">
                 </td>
             </form>
 
@@ -107,7 +107,7 @@
                 <!-- 削除ボタン -->
                 <form th:action="@{/delete/{id}(id=${task.id})}" th:method="delete">
                     <div class="delete">
-                        <input type="submit" value="削除">
+                        <input type="submit" value="削除" onclick="return confirm('タスクを削除しますか？');">
                     </div>
                 </form>
             </td>
