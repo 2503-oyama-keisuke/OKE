@@ -68,7 +68,7 @@ public class ToDoListController {
     public ModelAndView addContent(@ModelAttribute("formModel") @Validated TaskForm task, BindingResult result) {
 
         List<String> errorMessages = new ArrayList<>();
-        if (result.hasErrors() || task.getContent().matches("　")) {
+        if (result.hasErrors() || task.getContent().matches("[　]*")) {
             if (result.hasErrors()) {
                 String errorMessage;
                 for (FieldError error : result.getFieldErrors()) {
@@ -76,7 +76,7 @@ public class ToDoListController {
                     errorMessages.add(errorMessage);
                 }
             }
-            if (task.getContent().matches("　")) {
+            if (task.getContent().matches("[　]*")) {
                 errorMessages.add("・タスクを入力してください");
             }
             ModelAndView mav = new ModelAndView();
@@ -119,7 +119,7 @@ public class ToDoListController {
             status, @ModelAttribute("formModel") @Validated TaskForm task, BindingResult result) {
 
         List<String> errorMessages = new ArrayList<>();
-        if (result.hasErrors() || task.getContent().matches("　")) {
+        if (result.hasErrors() || task.getContent().matches("[　]*")) {
             if (result.hasErrors()) {
                 String errorMessage;
                 for (FieldError error : result.getFieldErrors()) {
@@ -127,7 +127,7 @@ public class ToDoListController {
                     errorMessages.add(errorMessage);
                 }
             }
-            if (task.getContent().matches("　")) {
+            if (task.getContent().matches("[　]*")) {
                 errorMessages.add("・タスクを入力してください");
             }
             ModelAndView mav = new ModelAndView();
