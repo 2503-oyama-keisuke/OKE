@@ -67,7 +67,9 @@
         <tr>
             <td>
                 <!-- タスク内容 -->
+                <div class="content">
                 <pre><p th:text="${task.content}"></p></pre>
+                </div>
             </td>
             <form th:action="@{/editStatus/{id}(id=${task.id})}" th:method="put">
                 <td>

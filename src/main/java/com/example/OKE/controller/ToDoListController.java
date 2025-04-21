@@ -61,6 +61,8 @@ public class ToDoListController {
         mav.addObject("formModel", task);
         // 画面遷移先を指定
         mav.setViewName("/new");
+        mav.addObject("errorMessages", session.getAttribute("errorMessages"));
+        session.invalidate();
         return mav;
     }
 
@@ -68,7 +70,7 @@ public class ToDoListController {
     public ModelAndView addContent(@ModelAttribute("formModel") @Validated TaskForm task, BindingResult result) {
 
         List<String> errorMessages = new ArrayList<>();
-        if (result.hasErrors() || task.getContent().matches("[　]*")) {
+        if (result.hasErrors() || task.getContent().matches("　")) {
             if (result.hasErrors()) {
                 String errorMessage;
                 for (FieldError error : result.getFieldErrors()) {
@@ -76,14 +78,12 @@ public class ToDoListController {
                     errorMessages.add(errorMessage);
                 }
             }
-            if (task.getContent().matches("[　]*")) {
+            if (task.getContent().matches("　")) {
                 errorMessages.add("・タスクを入力してください");
             }
-            ModelAndView mav = new ModelAndView();
-            mav.setViewName("/new");
-            mav.addObject("formModel", task);
-            mav.addObject("errorMessages", errorMessages);
-            return mav;
+            session.setAttribute("formModel", task);
+            session.setAttribute("errorMessages", errorMessages);
+            return new ModelAndView("redirect:/new");
         }
         Integer status = 1;
         task.setStatus(status);
@@ -111,6 +111,8 @@ public class ToDoListController {
         mav.addObject("formModel", task);
         // 画面遷移先を指定
         mav.setViewName("/edit");
+        mav.addObject("errorMessages", session.getAttribute("errorMessages"));
+        session.invalidate();
         return mav;
     }
 
@@ -119,7 +121,7 @@ public class ToDoListController {
             status, @ModelAttribute("formModel") @Validated TaskForm task, BindingResult result) {
 
         List<String> errorMessages = new ArrayList<>();
-        if (result.hasErrors() || task.getContent().matches("[　]*")) {
+        if (result.hasErrors() || task.getContent().matches("　")) {
             if (result.hasErrors()) {
                 String errorMessage;
                 for (FieldError error : result.getFieldErrors()) {
@@ -127,14 +129,12 @@ public class ToDoListController {
                     errorMessages.add(errorMessage);
                 }
             }
-            if (task.getContent().matches("[　]*")) {
+            if (task.getContent().matches("　")) {
                 errorMessages.add("・タスクを入力してください");
             }
-            ModelAndView mav = new ModelAndView();
-            mav.setViewName("/edit");
-            mav.addObject("formModel", task);
-            mav.addObject("errorMessages", errorMessages);
-            return mav;
+            session.setAttribute("formModel", task);
+            session.setAttribute("errorMessages", errorMessages);
+            return new ModelAndView("redirect:/edit/{id}");
         }
 
         task.setId(id);
