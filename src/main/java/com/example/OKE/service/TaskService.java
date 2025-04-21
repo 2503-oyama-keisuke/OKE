@@ -93,7 +93,7 @@ public class TaskService {
             task.setId(result.getId());
             task.setContent(result.getContent());
             task.setStatus(result.getStatus());
-            task.setLimitDate(result.getLimitDate());
+            task.setLimitDate(result.getLimitDate().toLocalDate());
             tasks.add(task);
         }
         return tasks;
@@ -107,7 +107,7 @@ public class TaskService {
         task.setId(reqTask.getId());
         task.setContent(reqTask.getContent());
         task.setStatus(reqTask.getStatus());
-        task.setLimitDate(reqTask.getLimitDate());
+        task.setLimitDate(reqTask.getLimitDate().atTime(0,0,0));
         return task;
     }
 }

@@ -41,7 +41,7 @@ public class ToDoListController {
         // 画面遷移先を指定
         mav.setViewName("/top");
         // 現在日時オブジェクト保管
-        mav.addObject("today", LocalDateTime.now());
+        mav.addObject("today", LocalDate.now());
         // 投稿データオブジェクトを保管
         mav.addObject("tasks", taskList);
         mav.addObject("start", start);
@@ -81,84 +81,89 @@ public class ToDoListController {
             mav.addObject("formModel", task);
             mav.addObject("errorMessages", errorMessages);
             return mav;
+//            session.setAttribute("formModel", task);
+//            session.setAttribute("errorMessages", errorMessages);
+//            return new ModelAndView("redire:/new");
         }
-        Integer status = 1;
-        task.setStatus(status);
-        // タスクをテーブルに格納
-        taskService.saveTask(task);
-        // rootへリダイレクト
-        return new ModelAndView("redirect:/");
-    }
-
-    @GetMapping("/edit/{id}")
-    public ModelAndView editContent(@PathVariable @Validated Integer id) {
-        String strId = id.toString();
-        List<String> errorMessages = new ArrayList<>();
-        TaskForm task = null;
-
-        if ((!StringUtils.isBlank(strId)) || strId.matches("^[0-9]*$")) {
-            task = taskService.editTask(id);
-        }
-        if (task == null) {
-            errorMessages.add("不正なパラメータです");
-            session.setAttribute("errorMessages", errorMessages);
+            Integer status = 1;
+            task.setStatus(status);
+            // タスクをテーブルに格納
+            taskService.saveTask(task);
+            // rootへリダイレクト
             return new ModelAndView("redirect:/");
-        }
-        ModelAndView mav = new ModelAndView();
-        mav.addObject("formModel", task);
-        // 画面遷移先を指定
-        mav.setViewName("/edit");
-        return mav;
     }
 
-    @PutMapping("/update/{id}")
-    public ModelAndView updateContent(@PathVariable Integer id, Integer status, @ModelAttribute("formModel") @Validated TaskForm task, BindingResult result) {
-
-        if (result.hasErrors()) {
+        @GetMapping("/edit/{id}")
+        public ModelAndView editContent (@PathVariable @Validated Integer id){
+            String strId = id.toString();
             List<String> errorMessages = new ArrayList<>();
-            String errorMessage;
-            for (FieldError error : result.getFieldErrors()) {
-                errorMessage = error.getDefaultMessage();
-                errorMessages.add(errorMessage);
+            TaskForm task = null;
+
+            if ((!StringUtils.isBlank(strId)) || strId.matches("^[0-9]*$")) {
+                task = taskService.editTask(id);
+            }
+            if (task == null) {
+                errorMessages.add("不正なパラメータです");
+                session.setAttribute("errorMessages", errorMessages);
+                return new ModelAndView("redirect:/");
             }
             ModelAndView mav = new ModelAndView();
-            mav.setViewName("/edit");
             mav.addObject("formModel", task);
-            mav.addObject("errorMessages", errorMessages);
+            // 画面遷移先を指定
+            mav.setViewName("/edit");
             return mav;
         }
 
-        task.setId(id);
-        task.setStatus(status);
-        // タスクをテーブルに格納
-        taskService.saveTask(task);
-        // rootへリダイレクト
-        return new ModelAndView("redirect:/");
-    }
+        @PutMapping("/update/{id}")
+        public ModelAndView updateContent (@PathVariable Integer id, Integer
+        status, @ModelAttribute("formModel") @Validated TaskForm task, BindingResult result){
 
-    /*
-     * タスク削除処理
-     */
-    @DeleteMapping("/delete/{id}")
-    public ModelAndView deleteTask(@PathVariable Integer id) {
-        //テーブルから投稿を削除
-        taskService.deleteTask(id);
-        //rootへリダイレクト
-        return new ModelAndView("redirect:/");
-    }
+            if (result.hasErrors()) {
+                List<String> errorMessages = new ArrayList<>();
+                String errorMessage;
+                for (FieldError error : result.getFieldErrors()) {
+                    errorMessage = error.getDefaultMessage();
+                    errorMessages.add(errorMessage);
+                }
+                ModelAndView mav = new ModelAndView();
+                mav.setViewName("/edit");
+                mav.addObject("formModel", task);
+                mav.addObject("errorMessages", errorMessages);
+                return mav;
+            }
 
-    /*
-     * ステータス変更処理
-     */
-    @PutMapping("/editStatus/{id}")
-    public ModelAndView editContent(@PathVariable Integer id, String content, Integer status, LocalDateTime limitDate) {
-        TaskForm task = new TaskForm();
-        task.setId(id);
-        task.setContent(content);
-        task.setStatus(status);
-        task.setLimitDate(limitDate);
-        taskService.saveStatus(task);
-        return new ModelAndView("redirect:/");
-    }
+            task.setId(id);
+            task.setStatus(status);
+            // タスクをテーブルに格納
+            taskService.saveTask(task);
+            // rootへリダイレクト
+            return new ModelAndView("redirect:/");
+        }
 
-}
+        /*
+         * タスク削除処理
+         */
+        @DeleteMapping("/delete/{id}")
+        public ModelAndView deleteTask (@PathVariable Integer id){
+            //テーブルから投稿を削除
+            taskService.deleteTask(id);
+            //rootへリダイレクト
+            return new ModelAndView("redirect:/");
+        }
+
+        /*
+         * ステータス変更処理
+         */
+        @PutMapping("/editStatus/{id}")
+        public ModelAndView editContent (@PathVariable Integer id, String content, Integer status, LocalDate
+        limitDate){
+            TaskForm task = new TaskForm();
+            task.setId(id);
+            task.setContent(content);
+            task.setStatus(status);
+            task.setLimitDate(limitDate);
+            taskService.saveStatus(task);
+            return new ModelAndView("redirect:/");
+        }
+
+    }

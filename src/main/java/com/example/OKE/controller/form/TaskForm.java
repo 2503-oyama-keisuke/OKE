@@ -21,7 +21,7 @@ public class TaskForm {
     private Integer status;
     @NotNull(message = "・期限を設定してください")
     @FutureOrPresent(message = "・無効な日付です")
-    private LocalDateTime limitDate;
+    private LocalDate limitDate;
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
 }
