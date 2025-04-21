@@ -63,9 +63,9 @@ public class TaskService {
         List<Task> results = new ArrayList<>();
         results.add((Task) taskRepository.findById(id).orElse(null));
         List<TaskForm> tasks = new ArrayList<>();
-        if(results.get(0) == null){
+        if (results.get(0) == null) {
             tasks.add(null);
-        }else{
+        } else {
             tasks = setTaskForm(results);
         }
         return tasks.get(0);
@@ -113,7 +113,7 @@ public class TaskService {
         task.setId(reqTask.getId());
         task.setContent(reqTask.getContent());
         task.setStatus(reqTask.getStatus());
-        task.setLimitDate(reqTask.getLimitDate().atTime(0,0,0));
+        task.setLimitDate(reqTask.getLimitDate().atTime(0, 0, 0));
         return task;
     }
 }

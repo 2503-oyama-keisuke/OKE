@@ -4,7 +4,6 @@ import com.example.OKE.controller.form.TaskForm;
 import com.example.OKE.service.TaskService;
 import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -70,7 +68,7 @@ public class ToDoListController {
     public ModelAndView addContent(@ModelAttribute("formModel") @Validated TaskForm task, BindingResult result) {
 
         List<String> errorMessages = new ArrayList<>();
-        if(result.hasErrors() || task.getContent().matches("　")) {
+        if (result.hasErrors() || task.getContent().matches("　")) {
             if (result.hasErrors()) {
                 String errorMessage;
                 for (FieldError error : result.getFieldErrors()) {
@@ -78,7 +76,7 @@ public class ToDoListController {
                     errorMessages.add(errorMessage);
                 }
             }
-            if(task.getContent().matches("　")){
+            if (task.getContent().matches("　")) {
                 errorMessages.add("・タスクを入力してください");
             }
             ModelAndView mav = new ModelAndView();
@@ -121,7 +119,7 @@ public class ToDoListController {
             status, @ModelAttribute("formModel") @Validated TaskForm task, BindingResult result) {
 
         List<String> errorMessages = new ArrayList<>();
-        if(result.hasErrors() || task.getContent().matches("　")) {
+        if (result.hasErrors() || task.getContent().matches("　")) {
             if (result.hasErrors()) {
                 String errorMessage;
                 for (FieldError error : result.getFieldErrors()) {
@@ -129,7 +127,7 @@ public class ToDoListController {
                     errorMessages.add(errorMessage);
                 }
             }
-            if(task.getContent().matches("　")){
+            if (task.getContent().matches("　")) {
                 errorMessages.add("・タスクを入力してください");
             }
             ModelAndView mav = new ModelAndView();

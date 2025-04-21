@@ -30,7 +30,7 @@
     <form action="/">
         <!-- 日付絞込み -->
         期限　<input type="date" name="start">
-         ～　<input type="date" name="end">
+        ～　<input type="date" name="end">
 
         <!-- ステータス絞込み -->
         ステータス
@@ -82,9 +82,9 @@
                 </td>
                 <td>
                     <!-- 変更ボタン -->
-<!--                    <input type="hidden" th:value="task.status">-->
-<!--                    <input type="hidden" th:value="${task.content}">-->
-<!--                    <input type="hidden" th:value="${task.limitDate}">-->
+                    <!--                    <input type="hidden" th:value="task.status">-->
+                    <!--                    <input type="hidden" th:value="${task.content}">-->
+                    <!--                    <input type="hidden" th:value="${task.limitDate}">-->
                     <input type="submit" value="変更" onclick="return confirm('ステータスを変更しますか？');">
                 </td>
             </form>
