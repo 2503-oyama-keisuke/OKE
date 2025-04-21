@@ -10,7 +10,7 @@
     <h2>タスク編集</h2>
 </div>
 <div class="main-contents">
-    <div class="errorMessages-icon" th:each="errorMessage : ${errorMessages}">
+    <div class="errorMessages" th:each="errorMessage : ${errorMessages}">
         <span th:text="${errorMessage}"/>
     </div>
     <form th:method="put" th:action="@{/update/{id}(id=${formModel.id})}" th:object="${formModel}">
@@ -18,16 +18,14 @@
             <label>タスク内容</label><br/>
             <textarea class="task-box" th:field="*{content}" size="20" maxlength="200"/></textarea><br/>
             <label>タスク期限</label><br/>
-            <input th:type="hidden" th:field="*{status}">
+            <input type="hidden" th:field="*{status}">
             <input th:type="date" th:field="*{limitDate}">
             <input type="submit" value="編集"/>
         </div>
     </form>
 </div>
 <div class="footer-contents">
-    <a href="/">
-        <input type="submit" value="戻る"/>
-    </a>
+    <a href="/">戻る</a>
 </div>
 </body>
 </html>
