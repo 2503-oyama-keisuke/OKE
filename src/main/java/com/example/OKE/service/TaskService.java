@@ -62,8 +62,13 @@ public class TaskService {
     public TaskForm editTask(Integer id) {
         List<Task> results = new ArrayList<>();
         results.add((Task) taskRepository.findById(id).orElse(null));
-        List<TaskForm> reports = setTaskForm(results);
-        return reports.get(0);
+        List<TaskForm> tasks = new ArrayList<>();
+        if(results.get(0) == null){
+            tasks.add(null);
+        }else{
+            tasks = setTaskForm(results);
+        }
+        return tasks.get(0);
     }
 
     /*
