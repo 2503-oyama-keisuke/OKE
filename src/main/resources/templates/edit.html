@@ -19,7 +19,7 @@
             <textarea class="task-box" th:field="*{content}" size="20" maxlength="200"/></textarea><br/>
             <label>タスク期限</label><br/>
             <input type="hidden" th:field="*{status}">
-            <input th:type="date" th:field="*{limitDate}">
+            <input th:type="date" th:name="limitDate" th:value="*{limitDate}">
             <input type="submit" value="編集"/>
         </div>
     </form>

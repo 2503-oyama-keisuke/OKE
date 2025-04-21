@@ -69,12 +69,17 @@ public class ToDoListController {
     @PostMapping("/add")
     public ModelAndView addContent(@ModelAttribute("formModel") @Validated TaskForm task, BindingResult result) {
 
-        if (result.hasErrors()) {
-            List<String> errorMessages = new ArrayList<>();
-            String errorMessage;
-            for (FieldError error : result.getFieldErrors()) {
-                errorMessage = error.getDefaultMessage();
-                errorMessages.add(errorMessage);
+        List<String> errorMessages = new ArrayList<>();
+        if(result.hasErrors() || task.getContent().matches("　")) {
+            if (result.hasErrors()) {
+                String errorMessage;
+                for (FieldError error : result.getFieldErrors()) {
+                    errorMessage = error.getDefaultMessage();
+                    errorMessages.add(errorMessage);
+                }
+            }
+            if(task.getContent().matches("　")){
+                errorMessages.add("・タスクを入力してください");
             }
             ModelAndView mav = new ModelAndView();
             mav.setViewName("/new");
@@ -115,12 +120,17 @@ public class ToDoListController {
     public ModelAndView updateContent(@PathVariable Integer id, Integer
             status, @ModelAttribute("formModel") @Validated TaskForm task, BindingResult result) {
 
-        if (result.hasErrors()) {
-            List<String> errorMessages = new ArrayList<>();
-            String errorMessage;
-            for (FieldError error : result.getFieldErrors()) {
-                errorMessage = error.getDefaultMessage();
-                errorMessages.add(errorMessage);
+        List<String> errorMessages = new ArrayList<>();
+        if(result.hasErrors() || task.getContent().matches("　")) {
+            if (result.hasErrors()) {
+                String errorMessage;
+                for (FieldError error : result.getFieldErrors()) {
+                    errorMessage = error.getDefaultMessage();
+                    errorMessages.add(errorMessage);
+                }
+            }
+            if(task.getContent().matches("　")){
+                errorMessages.add("・タスクを入力してください");
             }
             ModelAndView mav = new ModelAndView();
             mav.setViewName("/edit");
