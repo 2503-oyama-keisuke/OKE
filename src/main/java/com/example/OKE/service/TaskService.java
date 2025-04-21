@@ -108,7 +108,7 @@ public class TaskService {
         task.setId(reqTask.getId());
         task.setContent(reqTask.getContent());
         task.setStatus(reqTask.getStatus());
-        task.setLimitDate(reqTask.getLimitDate().atTime(0, 0, 0));
+        task.setLimitDate(reqTask.getLimitDate().atTime(0,0,0));
         return task;
     }
 }

@@ -16,7 +16,7 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(insertable = true, updatable = false)
+    @Column(insertable = true, updatable = true)
     private String content;
 
     @Column(insertable = true, updatable = true)

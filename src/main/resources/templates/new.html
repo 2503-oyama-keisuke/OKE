@@ -3,11 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <link th:href="@{/css/style.css}" rel="styleSheet">
-    <style>
-        .errorMessages-icon{
-        color : red;
-        }
-    </style>
     <title>タスク追加</title>
 </head>
 <body>
@@ -15,7 +10,7 @@
     <h2>タスク追加</h2>
 </div>
 <div class="main-contents">
-    <div class="errorMessages-icon" th:each="errorMessage : ${errorMessages}">
+    <div class="errorMessages" th:each="errorMessage : ${errorMessages}">
         <span th:text="${errorMessage}"/>
     </div>
     <form th:method="post" th:action="@{/add}" th:object="${formModel}">

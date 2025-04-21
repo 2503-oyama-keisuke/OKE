@@ -3,9 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <link th:href="@{/css/style.css}" rel="stylesheet">
-<!--    <style>-->
-<!--        -->
-<!--    </style>-->
     <title>TOP</title>
 </head>
 <body>
@@ -14,8 +11,8 @@
 </div>
 
 <!-- エラーメッセージ表示 -->
-<div th:if="${errorMessage}">
-    <p th:text="${errorMessage}"></p>
+<div class="errorMessages" th:each="errorMessage : ${errorMessages}">
+    <span th:text="${errorMessage}"/>
 </div>
 
 <!-- 本日の日付表示 -->
@@ -85,7 +82,9 @@
                 </td>
                 <td>
                     <!-- 変更ボタン -->
-                    <input type="hidden" th:value="task.status">
+<!--                    <input type="hidden" th:value="task.status">-->
+                    <input type="hidden" th:value="${task.content}">
+                    <input type="hidden" th:value="${task.limitDate}">
                     <input type="submit" value="変更">
                 </td>
             </form>
